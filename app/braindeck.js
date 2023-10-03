@@ -5,34 +5,34 @@ import React, { useState, useEffect } from 'react';
 export default function BrainDeck() {
 
     const LEVELS = {
-        '왕초보': {
+        '매우 쉬움': {
           size: 12,
           operators: ['+', '-'],
           operatorColor: 'bg-yellow-300'
         },
-        '초보자': {
+        '쉬움': {
           size: 16,
           operators: ['+', '-'],
           operatorColor: 'bg-yellow-300'
         },
-        '중급자': {
+        '보통': {
           size: 16,
           operators: ['+', '-', '×', '÷'],
           operatorColor: 'bg-yellow-300'
         },
-        '고급자': {
+        '어려움': {
           size: 16,
           operators: ['+', '-', '×', '÷'],
           operatorColor: 'bg-gray-200'
         },
-        '초고급자': {
+        '매우 어려움': {
           size: 20,
           operators: ['+', '-', '×', '÷'],
           operatorColor: 'bg-gray-200'
         }
       };
       
-  const [level, setLevel] = useState('중급자');
+  const [level, setLevel] = useState('보통');
   const [cards, setCards] = useState(generateCards(level));
   const [selectedCards, setSelectedCards] = useState([]);
   const [isCheckButtonActive, setIsCheckButtonActive] = useState(false);
@@ -195,20 +195,25 @@ export default function BrainDeck() {
   // ... (Other functionalities)
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="container bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
+    <>
+    <div className="min-h-screen flex items-center justify-center">
+      <div>
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
   
         {/* 난이도 선택 버튼들 */}
-        <div className="mb-6 flex justify-center flex-wrap">
-          {Object.keys(LEVELS).map((lvl) => (
-            <button
-              key={lvl}
-              className={`mr-2 mb-2 px-4 py-2 rounded ${level === lvl ? 'bg-blue-700 hover:bg-blue-800' : 'bg-blue-500 hover:bg-blue-600'} text-white transition duration-150`}
-              onClick={() => changeLevel(lvl)}
-            >
-              {lvl}
-            </button>
-          ))}
+        <div className='flex justify-between items-center'>
+          <div className='text-[2rem] font-black mr-10'>🧠 BrainDeck</div>
+          <div className="flex justify-center flex-wrap items-center">
+            {Object.keys(LEVELS).map((lvl) => (
+              <button
+                key={lvl}
+                className={`mr-2 px-3 py-1 text-[0.9rem] rounded ${level === lvl ? 'bg-green-600 bg-green-800' : 'bg-green-500 hover:bg-green-600'} text-white transition duration-150`}
+                onClick={() => changeLevel(lvl)}
+              >
+                {lvl}
+              </button>
+            ))}
+          </div>
         </div>
   
         {/* 타겟 넘버 표시 */}
@@ -219,7 +224,7 @@ export default function BrainDeck() {
         </div>
   
         {/* 카드 배열 */}
-        <div className="grid grid-cols-3 gap-4 mb-6 md:grid-cols-4 lg:grid-cols-4">
+        <div className={`grid grid-cols-3 gap-4 mb-6 ${(level === '매우 어려움' ? "md:grid-cols-5" : 'md:grid-cols-4')}`}>
           {cards.map((card, index) => (
             <div 
               key={index} 
@@ -234,6 +239,9 @@ export default function BrainDeck() {
         {/* 확인 버튼 */}
 
       </div>
+      <div className='text-center opacity-80 my-2 text-white'>BrainDeck by 행복한엄쌤</div>
+      </div>
+
       <div className="statusBox bg-white p-4 rounded-lg shadow-md ml-4">
         
         <div className='flex justify-center my-3'>
@@ -248,7 +256,7 @@ export default function BrainDeck() {
         </div>
         <div>
         <button 
-          className={`w-full text-lg text-white py-3 mb-4 rounded transition-colors duration-150 ${isCheckButtonActive ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-indigo-300 cursor-not-allowed'}`}
+          className={`w-full text-lg text-white py-3 mb-2 rounded transition-colors duration-150 ${isCheckButtonActive ? 'bg-[#2686DE] hover:bg-[#2686DE80]' : 'bg-[#2686DE50] cursor-not-allowed'}`}
           disabled={!isCheckButtonActive}
           onClick={checkAnswer}
         >
@@ -256,13 +264,13 @@ export default function BrainDeck() {
         </button>
         </div>
         <button 
-          className="hintButton bg-blue-500 text-white px-4 py-2 mb-4" 
+          className="hintButton rounded bg-[#208F5F] text-white px-4 py-2 mr-1 mb-4" 
           onClick={handleHintClick}
         >
           힌트
         </button>
         <button 
-          className="shuffleButton bg-green-500 text-white px-4 py-2 mb-4" 
+          className="shuffleButton rounded bg-[#BCD32E] text-white px-4 py-2 mb-4" 
           onClick={handleShuffleClick}
         >
           섞기
@@ -270,6 +278,7 @@ export default function BrainDeck() {
         <p>맞춘 갯수: {correctCount}</p>
       </div>
     </div>
+    </>
   );
   
 }
